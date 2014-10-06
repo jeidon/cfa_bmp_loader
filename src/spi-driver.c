@@ -65,7 +65,7 @@ int SPIInit(int devNo, int bpw, int speedl) {
 
 int SPIWriteWord(void *data)
 {
-    int i = write(fd, data, (int)ceil(bits / 8.0));
+    int i = write(fd, data, (bits+0x07)>>3);
     if (i == -1)
         return SPI_WRITE_ERROR;
 
@@ -74,7 +74,7 @@ int SPIWriteWord(void *data)
 
 int SPIWriteChunk(void *data, int count)
 {
-    int byteSize = (int)ceil(bits / 8.0);
+    int byteSize = (bits+0x07)>>3;
     for (int i = 0; i < count; i++)
     {
         int j = SPIWriteWord(data + (byteSize * i));
